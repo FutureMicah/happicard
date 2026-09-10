@@ -14,178 +14,53 @@ export type Database = {
   }
   public: {
     Tables: {
-      orders: {
+      payment_sessions: {
         Row: {
-          address_line: string
-          city: string
-          code: string
-          country: string
+          amount: number
           created_at: string
+          currency: string
+          customer: Json
           id: string
           items: Json
-          note: string
+          merchant: string
+          merchant_reference: string | null
           paid_at: string | null
           payment_reference: string | null
-          postal_code: string
-          receiver_email: string
-          receiver_name: string
-          receiver_phone: string
-          shipping: number
-          state: string
+          return_url: string
           status: string
-          subtotal: number
-          total: number
-          updated_at: string
+          webhook_url: string | null
         }
         Insert: {
-          address_line: string
-          city: string
-          code: string
-          country?: string
+          amount: number
           created_at?: string
+          currency?: string
+          customer?: Json
           id?: string
           items?: Json
-          note?: string
+          merchant?: string
+          merchant_reference?: string | null
           paid_at?: string | null
           payment_reference?: string | null
-          postal_code: string
-          receiver_email: string
-          receiver_name: string
-          receiver_phone: string
-          shipping?: number
-          state: string
+          return_url: string
           status?: string
-          subtotal?: number
-          total?: number
-          updated_at?: string
+          webhook_url?: string | null
         }
         Update: {
-          address_line?: string
-          city?: string
-          code?: string
-          country?: string
+          amount?: number
           created_at?: string
+          currency?: string
+          customer?: Json
           id?: string
           items?: Json
-          note?: string
+          merchant?: string
+          merchant_reference?: string | null
           paid_at?: string | null
           payment_reference?: string | null
-          postal_code?: string
-          receiver_email?: string
-          receiver_name?: string
-          receiver_phone?: string
-          shipping?: number
-          state?: string
+          return_url?: string
           status?: string
-          subtotal?: number
-          total?: number
-          updated_at?: string
+          webhook_url?: string | null
         }
         Relationships: []
-      }
-      products: {
-        Row: {
-          badge: string | null
-          brand: string
-          category: string
-          colors: string[]
-          created_at: string
-          description: string
-          gallery: string[]
-          id: string
-          image_url: string
-          is_featured: boolean
-          name: string
-          original_price: number | null
-          price: number
-          rating: number
-          review_count: number
-          sizes: string[]
-          slug: string
-          stock: number
-          tags: string[]
-          updated_at: string
-        }
-        Insert: {
-          badge?: string | null
-          brand?: string
-          category: string
-          colors?: string[]
-          created_at?: string
-          description?: string
-          gallery?: string[]
-          id?: string
-          image_url: string
-          is_featured?: boolean
-          name: string
-          original_price?: number | null
-          price: number
-          rating?: number
-          review_count?: number
-          sizes?: string[]
-          slug: string
-          stock?: number
-          tags?: string[]
-          updated_at?: string
-        }
-        Update: {
-          badge?: string | null
-          brand?: string
-          category?: string
-          colors?: string[]
-          created_at?: string
-          description?: string
-          gallery?: string[]
-          id?: string
-          image_url?: string
-          is_featured?: boolean
-          name?: string
-          original_price?: number | null
-          price?: number
-          rating?: number
-          review_count?: number
-          sizes?: string[]
-          slug?: string
-          stock?: number
-          tags?: string[]
-          updated_at?: string
-        }
-        Relationships: []
-      }
-      reviews: {
-        Row: {
-          author_name: string
-          comment: string
-          created_at: string
-          id: string
-          product_id: string
-          rating: number
-        }
-        Insert: {
-          author_name: string
-          comment?: string
-          created_at?: string
-          id?: string
-          product_id: string
-          rating: number
-        }
-        Update: {
-          author_name?: string
-          comment?: string
-          created_at?: string
-          id?: string
-          product_id?: string
-          rating?: number
-        }
-        Relationships: [
-          {
-            foreignKeyName: "reviews_product_id_fkey"
-            columns: ["product_id"]
-            isOneToOne: false
-            referencedRelation: "products"
-            referencedColumns: ["id"]
-          },
-        ]
       }
     }
     Views: {

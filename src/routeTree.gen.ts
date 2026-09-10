@@ -10,33 +10,90 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as CheckoutRouteImport } from './routes/checkout'
+import { Route as IntegrateRouteImport } from './routes/integrate'
+import { Route as OrderCompleteRouteImport } from './routes/order-complete'
+import { Route as ApiPublicCheckoutSessionsRouteImport } from './routes/api/public/checkout/sessions'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const CheckoutRoute = CheckoutRouteImport.update({
+  id: '/checkout',
+  path: '/checkout',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const IntegrateRoute = IntegrateRouteImport.update({
+  id: '/integrate',
+  path: '/integrate',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const OrderCompleteRoute = OrderCompleteRouteImport.update({
+  id: '/order-complete',
+  path: '/order-complete',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ApiPublicCheckoutSessionsRoute =
+  ApiPublicCheckoutSessionsRouteImport.update({
+    id: '/api/public/checkout/sessions',
+    path: '/api/public/checkout/sessions',
+    getParentRoute: () => rootRouteImport,
+  } as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/checkout': typeof CheckoutRoute
+  '/integrate': typeof IntegrateRoute
+  '/order-complete': typeof OrderCompleteRoute
+  '/api/public/checkout/sessions': typeof ApiPublicCheckoutSessionsRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/checkout': typeof CheckoutRoute
+  '/integrate': typeof IntegrateRoute
+  '/order-complete': typeof OrderCompleteRoute
+  '/api/public/checkout/sessions': typeof ApiPublicCheckoutSessionsRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/checkout': typeof CheckoutRoute
+  '/integrate': typeof IntegrateRoute
+  '/order-complete': typeof OrderCompleteRoute
+  '/api/public/checkout/sessions': typeof ApiPublicCheckoutSessionsRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/'
+  fullPaths:
+    | '/'
+    | '/checkout'
+    | '/integrate'
+    | '/order-complete'
+    | '/api/public/checkout/sessions'
   fileRoutesByTo: FileRoutesByTo
-  to: '/'
-  id: '__root__' | '/'
+  to:
+    | '/'
+    | '/checkout'
+    | '/integrate'
+    | '/order-complete'
+    | '/api/public/checkout/sessions'
+  id:
+    | '__root__'
+    | '/'
+    | '/checkout'
+    | '/integrate'
+    | '/order-complete'
+    | '/api/public/checkout/sessions'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  CheckoutRoute: typeof CheckoutRoute
+  IntegrateRoute: typeof IntegrateRoute
+  OrderCompleteRoute: typeof OrderCompleteRoute
+  ApiPublicCheckoutSessionsRoute: typeof ApiPublicCheckoutSessionsRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -48,11 +105,43 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/checkout': {
+      id: '/checkout'
+      path: '/checkout'
+      fullPath: '/checkout'
+      preLoaderRoute: typeof CheckoutRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/integrate': {
+      id: '/integrate'
+      path: '/integrate'
+      fullPath: '/integrate'
+      preLoaderRoute: typeof IntegrateRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/order-complete': {
+      id: '/order-complete'
+      path: '/order-complete'
+      fullPath: '/order-complete'
+      preLoaderRoute: typeof OrderCompleteRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/api/public/checkout/sessions': {
+      id: '/api/public/checkout/sessions'
+      path: '/api/public/checkout/sessions'
+      fullPath: '/api/public/checkout/sessions'
+      preLoaderRoute: typeof ApiPublicCheckoutSessionsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  CheckoutRoute: CheckoutRoute,
+  IntegrateRoute: IntegrateRoute,
+  OrderCompleteRoute: OrderCompleteRoute,
+  ApiPublicCheckoutSessionsRoute: ApiPublicCheckoutSessionsRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
