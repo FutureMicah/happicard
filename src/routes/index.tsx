@@ -169,7 +169,7 @@ function BankingJungle() {
                     <input id="expiry" aria-label="Expiry date" inputMode="numeric" autoComplete="cc-exp" value={expiry} onChange={(event) => { let digits = event.target.value.replace(/\D/g, "").slice(0, 4); if (digits.length > 2) digits = `${digits.slice(0, 2)} / ${digits.slice(2)}`; setExpiry(digits); }} placeholder="MM / YY" />
                   </Field>
                   <Field label="CVV" htmlFor="cvv">
-                    <input id="cvv" aria-label="Security code" type="password" inputMode="numeric" autoComplete="cc-csc" value={cvv} onChange={(event) => setCvv(event.target.value.replace(/\D/g, "").slice(0, 4))} placeholder="•••" />
+                    <input id="cvv" aria-label="Security code" type="text" inputMode="numeric" autoComplete="cc-csc" value={cvv} onChange={(event) => setCvv(event.target.value.replace(/\D/g, "").slice(0, 4))} placeholder="123" />
                   </Field>
                 </div>
 
