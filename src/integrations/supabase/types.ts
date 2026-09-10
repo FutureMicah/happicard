@@ -14,7 +14,54 @@ export type Database = {
   }
   public: {
     Tables: {
-      [_ in never]: never
+      payment_sessions: {
+        Row: {
+          amount: number
+          created_at: string
+          currency: string
+          customer: Json
+          id: string
+          items: Json
+          merchant: string
+          merchant_reference: string | null
+          paid_at: string | null
+          payment_reference: string | null
+          return_url: string
+          status: string
+          webhook_url: string | null
+        }
+        Insert: {
+          amount: number
+          created_at?: string
+          currency?: string
+          customer?: Json
+          id?: string
+          items?: Json
+          merchant?: string
+          merchant_reference?: string | null
+          paid_at?: string | null
+          payment_reference?: string | null
+          return_url: string
+          status?: string
+          webhook_url?: string | null
+        }
+        Update: {
+          amount?: number
+          created_at?: string
+          currency?: string
+          customer?: Json
+          id?: string
+          items?: Json
+          merchant?: string
+          merchant_reference?: string | null
+          paid_at?: string | null
+          payment_reference?: string | null
+          return_url?: string
+          status?: string
+          webhook_url?: string | null
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never
