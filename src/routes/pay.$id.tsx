@@ -22,7 +22,7 @@ export const Route = createFileRoute("/pay/$id")({
       ],
     };
   },
-  component: PayPage;
+  component: PayPage,
 });
 
 const POLLEN = Array.from({ length: 22 }, (_, index) => ({
