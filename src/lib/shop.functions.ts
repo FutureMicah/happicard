@@ -159,7 +159,7 @@ export const createOrder = createServerFn({ method: "POST" })
         postal_code: data.postalCode,
         country: data.country,
         note: data.note,
-        items: items as unknown as Database["public"]["Tables"]["orders"]["Insert"]["items"],
+        items: items as unknown as NonNullable<Database["public"]["Tables"]["orders"]["Insert"]["items"]>,
         subtotal: Number(subtotal.toFixed(2)),
         shipping,
         total,
