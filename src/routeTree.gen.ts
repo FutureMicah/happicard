@@ -13,6 +13,7 @@ import { Route as IndexRouteImport } from './routes/index'
 import { Route as CheckoutRouteImport } from './routes/checkout'
 import { Route as IntegrateRouteImport } from './routes/integrate'
 import { Route as OrderCompleteRouteImport } from './routes/order-complete'
+import { Route as PayIdRouteImport } from './routes/pay.$id'
 import { Route as ApiPublicCheckoutSessionsRouteImport } from './routes/api/public/checkout/sessions'
 
 const IndexRoute = IndexRouteImport.update({
@@ -35,6 +36,11 @@ const OrderCompleteRoute = OrderCompleteRouteImport.update({
   path: '/order-complete',
   getParentRoute: () => rootRouteImport,
 } as any)
+const PayIdRoute = PayIdRouteImport.update({
+  id: '/pay/$id',
+  path: '/pay/$id',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const ApiPublicCheckoutSessionsRoute =
   ApiPublicCheckoutSessionsRouteImport.update({
     id: '/api/public/checkout/sessions',
@@ -47,6 +53,7 @@ export interface FileRoutesByFullPath {
   '/checkout': typeof CheckoutRoute
   '/integrate': typeof IntegrateRoute
   '/order-complete': typeof OrderCompleteRoute
+  '/pay/$id': typeof PayIdRoute
   '/api/public/checkout/sessions': typeof ApiPublicCheckoutSessionsRoute
 }
 export interface FileRoutesByTo {
@@ -54,6 +61,7 @@ export interface FileRoutesByTo {
   '/checkout': typeof CheckoutRoute
   '/integrate': typeof IntegrateRoute
   '/order-complete': typeof OrderCompleteRoute
+  '/pay/$id': typeof PayIdRoute
   '/api/public/checkout/sessions': typeof ApiPublicCheckoutSessionsRoute
 }
 export interface FileRoutesById {
@@ -62,6 +70,7 @@ export interface FileRoutesById {
   '/checkout': typeof CheckoutRoute
   '/integrate': typeof IntegrateRoute
   '/order-complete': typeof OrderCompleteRoute
+  '/pay/$id': typeof PayIdRoute
   '/api/public/checkout/sessions': typeof ApiPublicCheckoutSessionsRoute
 }
 export interface FileRouteTypes {
@@ -71,6 +80,7 @@ export interface FileRouteTypes {
     | '/checkout'
     | '/integrate'
     | '/order-complete'
+    | '/pay/$id'
     | '/api/public/checkout/sessions'
   fileRoutesByTo: FileRoutesByTo
   to:
@@ -78,6 +88,7 @@ export interface FileRouteTypes {
     | '/checkout'
     | '/integrate'
     | '/order-complete'
+    | '/pay/$id'
     | '/api/public/checkout/sessions'
   id:
     | '__root__'
@@ -85,6 +96,7 @@ export interface FileRouteTypes {
     | '/checkout'
     | '/integrate'
     | '/order-complete'
+    | '/pay/$id'
     | '/api/public/checkout/sessions'
   fileRoutesById: FileRoutesById
 }
@@ -93,6 +105,7 @@ export interface RootRouteChildren {
   CheckoutRoute: typeof CheckoutRoute
   IntegrateRoute: typeof IntegrateRoute
   OrderCompleteRoute: typeof OrderCompleteRoute
+  PayIdRoute: typeof PayIdRoute
   ApiPublicCheckoutSessionsRoute: typeof ApiPublicCheckoutSessionsRoute
 }
 
@@ -126,6 +139,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof OrderCompleteRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/pay/$id': {
+      id: '/pay/$id'
+      path: '/pay/$id'
+      fullPath: '/pay/$id'
+      preLoaderRoute: typeof PayIdRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/api/public/checkout/sessions': {
       id: '/api/public/checkout/sessions'
       path: '/api/public/checkout/sessions'
@@ -141,6 +161,7 @@ const rootRouteChildren: RootRouteChildren = {
   CheckoutRoute: CheckoutRoute,
   IntegrateRoute: IntegrateRoute,
   OrderCompleteRoute: OrderCompleteRoute,
+  PayIdRoute: PayIdRoute,
   ApiPublicCheckoutSessionsRoute: ApiPublicCheckoutSessionsRoute,
 }
 export const routeTree = rootRouteImport
