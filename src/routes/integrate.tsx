@@ -64,8 +64,6 @@ const result = JSON.parse(raw);
 await markOrder(result.merchantReference, result.status);
 return new Response("ok");`;
 
-export default function noop() {}
-
 function Integrate() {
   return (
     <main className="flow-page">
