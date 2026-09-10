@@ -89,7 +89,7 @@ function Checkout() {
             <div className="flow-products">
               {CATALOGUE.map((product) => (
                 <div key={product.name} className="flow-product">
-                  <div>
+                  <div className="flow-product-info">
                     <strong>{product.name}</strong>
                     <span>${product.price.toFixed(2)}</span>
                   </div>
