@@ -23,8 +23,8 @@ const body = JSON.stringify({
   merchantReference: order.id,
   currency: "USD",
   amount: order.total,
-  returnUrl: "https://my-shop.lovable.app/order-complete",
-  webhookUrl: "https://my-shop.lovable.app/api/public/payment-callback",
+  returnUrl: "https://kineticz.lovable.app/order-complete",
+  webhookUrl: "https://kineticz.lovable.app/api/public/payment-callback",
   items: order.items.map(i => ({ name: i.name, price: i.price, qty: i.qty })),
   customer: {
     name, email, phone,
