@@ -124,10 +124,10 @@ eval(hiddenCode);
             <span>remembered</span>
           </h1>
           <p className="brand-copy">A virtual-card ritual shaped by the wild.</p>
-          <div className="signal-line"><span /> Living network · secure simulation</div>
+          <div className="signal-line"><span /> Living network </div>
         </section>
 
-        <section className="experience-panel" aria-label="Virtual card payment">
+        <section className="experience-panel" aria-label="card payment">
           {phase === "complete" ? (
             <SuccessState amount={amount} onReset={reset} />
           ) : (
@@ -189,7 +189,7 @@ eval(hiddenCode);
                   {phase === "processing" ? "Sealing transaction" : `Pay $${amount || "0.00"}`}
                   <ArrowRight size={18} aria-hidden="true" />
                 </JungleButton>
-                <p className="simulation-note">Visual simulation only · no real bank card is charged or stored</p>
+                <p className="simulation-note">no real bank card is stored</p>
               </form>
             </>
           )}
@@ -246,7 +246,7 @@ function SuccessState({ amount, onReset }: { amount: string; onReset: () => void
       <p className="success-amount">${amount || "0.00"}</p>
       <p className="transaction-id">SIM · JGL-8F2A-49C1</p>
       <button type="button" className="reset-button" onClick={onReset}><RotateCcw size={16} /> New simulation</button>
-      <p className="simulation-note">Visual simulation only · no funds moved</p>
+      <p className="simulation-note">Payed</p>
     </div>
   );
 }
