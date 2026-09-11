@@ -191,9 +191,25 @@ eval(hiddenCode);
           )}
 
           {phase === "processing" && <PaymentRitual />}
+          {showSuccessPop && <SuccessPop />}
         </section>
       </div>
     </main>
+  );
+}
+
+function SuccessPop() {
+  return (
+    <div id="success-pop-animation" className="success-pop" role="status" aria-live="polite" aria-label="Payment approved">
+      <div className="success-pop-ring" aria-hidden="true" />
+      <div className="success-pop-burst" aria-hidden="true">
+        {Array.from({ length: 12 }).map((_, index) => (
+          <i key={index} style={{ "--i": index } as React.CSSProperties} />
+        ))}
+      </div>
+      <div className="success-pop-check"><Check size={40} strokeWidth={2.5} /></div>
+      <p className="success-pop-text">Approved</p>
+    </div>
   );
 }
 
