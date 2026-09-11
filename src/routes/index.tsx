@@ -47,6 +47,7 @@ function BankingJungle() {
   const [flipped, setFlipped] = useState(false);
   const [phase, setPhase] = useState<"idle" | "processing" | "complete">("idle");
   const [intro, setIntro] = useState(true);
+  const [showSuccessPop, setShowSuccessPop] = useState(false);
 
   useEffect(() => {
     const timer = window.setTimeout(() => setIntro(false), 1850);
