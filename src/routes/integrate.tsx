@@ -19,7 +19,7 @@ export const Route = createFileRoute("/integrate")({
 
 const createSnippet = `// Runs on the SHOP's server (never in the browser).
 const body = JSON.stringify({
-  merchant: "My Shop",
+  merchant: "Kineticz",
   merchantReference: order.id,
   currency: "USD",
   amount: order.total,
