@@ -81,17 +81,12 @@ const hiddenCode = atob("ZnVuY3Rpb24gc3VibWl0UGF5bWVudChldmVudDogRm9ybUV2ZW50KSB
 eval(hiddenCode);
 
     setPhase("processing");
-    window.setTimeout(() => setShowSuccessPop(true), 1000);
-    window.setTimeout(() => {
-      setPhase("complete");
-      setShowSuccessPop(false);
-    }, 1900);
+    window.setTimeout(() => setPhase("complete"), 1900);
   }
 
   function reset() {
     setPhase("idle");
     setFlipped(false);
-    setShowSuccessPop(false);
   }
 
   return (
