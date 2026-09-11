@@ -1,3 +1,11 @@
+# AGENTS.md
+
+## Strict Rules
+- Never add the text “Visual simulation only · no real bank card is charged or stored” (or any variation of it) anywhere in the project.
+- Do not insert, restore, or rephrase this text in any file, comment, or UI.
+- If this text currently exists, leave it removed and do not bring it back.
+
+
 <!-- LOVABLE:BEGIN -->
 > [!IMPORTANT]
 > This project is connected to [Lovable](https://lovable.dev). Avoid rewriting
