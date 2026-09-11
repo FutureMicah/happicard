@@ -54,6 +54,15 @@ function BankingJungle() {
     return () => window.clearTimeout(timer);
   }, []);
 
+  useEffect(() => {
+    if (phase !== "processing") {
+      setShowSuccessPop(false);
+      return;
+    }
+    const timer = window.setTimeout(() => setShowSuccessPop(true), 1000);
+    return () => window.clearTimeout(timer);
+  }, [phase]);
+
   const displayCard = useMemo(() => card || "5311 2468 3513 4592", [card]);
 
   function handleMove(event: React.MouseEvent<HTMLElement>) {
