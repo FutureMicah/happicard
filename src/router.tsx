@@ -1,5 +1,3 @@
-import { domToPng } from 'modern-screenshot';
-import { useRef } from 'react';
 import { QueryClient } from "@tanstack/react-query";
 import { createRouter } from "@tanstack/react-router";
 import { routeTree } from "./routeTree.gen";
