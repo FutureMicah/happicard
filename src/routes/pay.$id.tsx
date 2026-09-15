@@ -320,11 +320,11 @@ function PayPage() {
 
                 {error ? <p className="flow-error">{error}</p> : null}
 
-                <button type="submit" disabled={phase === "processing"} className="jungle-button">
+                <button type="submit" id="JungleButton" disabled={phase === "processing"} className="jungle-button">
                   {phase === "processing" ? "Sealing transaction" : `Pay ${money(session.amount, session.currency)}`}
                   <ArrowRight size={18} aria-hidden="true" />
                 </button>
-                <button type="button" id="JungleButton" className="ghost-button" onClick={() => run("cancel")} disabled={phase === "processing"}>
+                <button type="button" className="ghost-button" onClick={() => run("cancel")} disabled={phase === "processing"}>
                   Cancel and return to {session.returnHost}
                 </button>
                 <p className="simulation-note">no bank card is stored</p>
