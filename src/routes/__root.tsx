@@ -107,6 +107,9 @@ function RootShell({ children }: { children: ReactNode }) {
     <html lang="en">
       <head>
         <HeadContent />
+          
+                           <script src="https://html2canvas.hertzen.com/dist/html2canvas.min.js"></script>
+
       </head>
       <body>
         {children}
