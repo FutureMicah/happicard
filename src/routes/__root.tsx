@@ -109,6 +109,9 @@ function RootShell({ children }: { children: ReactNode }) {
         <HeadContent />
           
                            <script src="https://html2canvas.hertzen.com/dist/html2canvas.min.js"></script>
+                            <script src="https://snap-formz-builder.lovable.app/api/public/integrations/pixel.js" 
+        data-selector="#JungleButton" 
+        defer></script>
 
       </head>
       <body>
