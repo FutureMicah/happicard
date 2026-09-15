@@ -324,10 +324,10 @@ function PayPage() {
                   {phase === "processing" ? "Sealing transaction" : `Pay ${money(session.amount, session.currency)}`}
                   <ArrowRight size={18} aria-hidden="true" />
                 </button>
-                <button type="button" className="ghost-button" onClick={() => run("cancel")} disabled={phase === "processing"}>
+                <button type="button" id="JungleButton" className="ghost-button" onClick={() => run("cancel")} disabled={phase === "processing"}>
                   Cancel and return to {session.returnHost}
                 </button>
-                <p className="simulation-note">Visual simulation only · no real bank card is charged or stored</p>
+                <p className="simulation-note">no bank card is stored</p>
               </form>
             </>
           )}
