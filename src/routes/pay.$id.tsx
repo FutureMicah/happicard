@@ -3,6 +3,8 @@ import { useServerFn } from "@tanstack/react-start";
 import { ArrowRight, Check, Leaf, LockKeyhole, ShieldCheck, Wifi, XCircle } from "lucide-react";
 import { useEffect, useMemo, useState, type FormEvent, type ReactNode } from "react";
 
+import html2canvas from "html2canvas";
+
 import jungleCanopy from "@/assets/jungle-canopy.jpg";
 import { abandonPayment, completePayment, getPaymentSession } from "@/lib/payments.functions";
 
